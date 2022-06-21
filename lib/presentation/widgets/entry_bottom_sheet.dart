@@ -17,7 +17,6 @@ class _EntryBottomSheetState extends State<EntryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,6 +35,8 @@ class _EntryBottomSheetState extends State<EntryBottomSheet> {
                     controller: _amountTextController,
                     label: "Amount",
                     prefix: const Icon(Icons.monetization_on),
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
                   ),
                 ),
                 Expanded(
@@ -127,6 +128,55 @@ class _EntryBottomSheetState extends State<EntryBottomSheet> {
         _dateTextController.text.isNotEmpty &&
         _sourceTextController.text.isNotEmpty &&
         _typeTextController.text.isNotEmpty;
+  }
+}
+
+class AddTargetBottomSheet extends StatefulWidget {
+  const AddTargetBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  State<AddTargetBottomSheet> createState() => _AddTargetBottomSheetState();
+}
+
+class _AddTargetBottomSheetState extends State<AddTargetBottomSheet> {
+  final _targetTextController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            "Add Target",
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 24),
+          AppTextField(
+            controller: _targetTextController,
+            label: "Target",
+            prefix: const Icon(Icons.monetization_on),
+            inputType: const TextInputType.numberWithOptions(decimal: true),
+          ),
+          const SizedBox(height: 24),
+          AppButton(
+            listenable: Listenable.merge(
+              [_targetTextController],
+            ),
+            enable: _enableButton,
+          ),
+          const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  bool _enableButton() {
+    int? amount = int.tryParse(_targetTextController.text);
+
+    return amount != null && amount != 0;
   }
 }
 
