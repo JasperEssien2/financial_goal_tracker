@@ -79,27 +79,29 @@ class TargetPieChart extends StatelessWidget {
         children: [
           const Text("Progress", style: captionTextStyle),
           const SizedBox(height: 12),
-          Center(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: PieChart(
-                PieChartData(
-                  centerSpaceColor: AppColor.primaryContainer,
-                  sections: [
-                    PieChartSectionData(
-                      value: 70,
-                      radius: 50,
-                      color: colorScheme.primary,
-                      titleStyle: labelTextStyle,
-                      title: "70%",
-                    ),
-                    PieChartSectionData(
-                      value: 30,
-                      showTitle: false,
-                      color: colorScheme.secondary,
-                      titleStyle: labelTextStyle,
-                    ),
-                  ],
+          Flexible(
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(
+                  PieChartData(
+                    centerSpaceColor: AppColor.primaryContainer,
+                    sections: [
+                      PieChartSectionData(
+                        value: 70,
+                        radius: 50,
+                        color: colorScheme.primary,
+                        titleStyle: labelTextStyle,
+                        title: "70%",
+                      ),
+                      PieChartSectionData(
+                        value: 30,
+                        showTitle: false,
+                        color: colorScheme.secondary,
+                        titleStyle: labelTextStyle,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
