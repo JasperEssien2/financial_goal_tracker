@@ -1,6 +1,6 @@
 import 'package:financial_goal_tracker/presentation/theme/colors.dart';
 import 'package:financial_goal_tracker/presentation/widgets/entry_tile.dart';
-import 'package:financial_goal_tracker/presentation/widgets/target_amount_card.dart';
+import 'package:financial_goal_tracker/presentation/widgets/widget_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,10 +18,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Builder(builder: (context) {
-      return Scaffold(
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        final padding = constraint.maxWidth > 600
+            ? EdgeInsets.symmetric(horizontal: constraint.maxWidth * .2)
+            : const EdgeInsets.symmetric(horizontal: 8);
+
+        return Container(
+          padding: padding,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -32,49 +36,53 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          child: CustomScrollView(
-            slivers: [
-              const SliverAppBar(
-                backgroundColor: Colors.transparent,
-                floating: true,
-                pinned: true,
-                systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarBrightness: Brightness.light,
-                ),
-                title: Text(
-                  "Target",
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                const SliverAppBar(
+                  backgroundColor: Colors.transparent,
+                  floating: true,
+                  pinned: true,
+                  systemOverlayStyle: SystemUiOverlayStyle(
+                    statusBarBrightness: Brightness.light,
+                  ),
+                  title: Text(
+                    "Target",
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate.fixed(
-                  [
-                    Row(
-                      children: const [
-                        Expanded(child: TargetAmountCard()),
-                        Expanded(child: TargetPieChart()),
-                      ],
-                    ),
-                    const MonthlyBarChart(),
-                    Column(
-                      children: List.generate(
-                        5,
-                        (index) => EntryListTile(),
+                SliverList(
+                  delegate: SliverChildListDelegate.fixed(
+                    [
+                      Row(
+                        children: const [
+                          Expanded(child: TargetAmountCard()),
+                          Expanded(child: TargetPieChart()),
+                        ],
                       ),
-                    ),
-                  ],
+                      const MonthlyBarChart(),
+                      Column(
+                        children: List.generate(
+                          5,
+                          (index) => EntryListTile(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            floatingActionButton: const FAButton(),
           ),
-        ),
-        floatingActionButton: const FAButton(),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -85,11 +93,16 @@ class FAButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return FloatingActionButton(
       backgroundColor: AppColor.primaryColor,
       onPressed: () {
         showModalBottomSheet(
           context: context,
+          constraints: BoxConstraints(
+            maxWidth: width > 600 ? width * .6  : width,
+          ),
           builder: (c) => const EntryBottomSheet(),
         );
       },
