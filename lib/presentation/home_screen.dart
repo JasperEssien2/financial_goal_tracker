@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Scaffold(
             backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: true,
             body: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
