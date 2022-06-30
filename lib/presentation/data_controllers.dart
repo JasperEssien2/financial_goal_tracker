@@ -1,3 +1,6 @@
+import 'package:either_dart/either.dart';
+import 'package:financial_goal_tracker/data/dart_export.dart';
+import 'package:financial_goal_tracker/domain/repository.dart';
 import 'package:flutter/material.dart';
 
 abstract class DataController<T> extends ChangeNotifier {
@@ -22,9 +25,65 @@ abstract class DataController<T> extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setError(String left) {
+    _error = left;
+    state = ConnectionState.done;
+  }
+
+  void setSuccess(T right) {
+    _data = right;
+    state = ConnectionState.done;
+  }
+
   bool get isLoading => _state == ConnectionState.waiting;
 
   bool get hasError => _state == ConnectionState.done && error != null;
 }
 
-class 
+class TargetDataController extends DataController<double> {
+  TargetDataController(this.repository) : super(0);
+
+  final Repository repository;
+
+  void saveTarget(double target) async {
+    state = ConnectionState.waiting;
+
+    repository.postTarget(target).fold(
+          (left) => setError(left),
+          (right) => setSuccess(right),
+        );
+  }
+}
+
+class EntryDataController extends DataController<EntryResponse?> {
+  EntryDataController(this.repository) : super(null);
+
+  final Repository repository;
+
+  void fetchEntries() async {
+    state = ConnectionState.waiting;
+
+    repository.getEntries().fold(
+          (left) => setError(left),
+          (right) => setSuccess(right),
+        );
+  }
+
+  void saveEntry(EntryPayload entry) async {
+    state = ConnectionState.waiting;
+
+    repository.postEntry(entry).fold(
+          (left) => setError(left),
+          (right) => setSuccess(right),
+        );
+  }
+
+  void deleteEntry(String entryId) async {
+    state = ConnectionState.waiting;
+
+    repository.deleteEntry(entryId).fold(
+          (left) => setError(left),
+          (right) => setSuccess(right),
+        );
+  }
+}

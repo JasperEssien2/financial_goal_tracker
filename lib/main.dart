@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
+import 'package:financial_goal_tracker/data/repository_impl.dart';
 import 'package:financial_goal_tracker/presentation/home_screen.dart';
+import 'package:financial_goal_tracker/presentation/repository_provider.dart';
 import 'package:financial_goal_tracker/presentation/theme/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Finances Tracker',
       theme: ThemeData(
         primaryColor: AppColor.primaryColor,
         bottomSheetTheme: BottomSheetThemeData(
-
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -31,7 +33,10 @@ class MyApp extends StatelessWidget {
           tertiaryContainer: AppColor.tertiaryContainer,
         ),
       ),
-      home: const HomeScreen(),
+      home: RepositoryProvider(
+        repository: RepositoryImpl(Dio()),
+        child: const HomeScreen(),
+      ),
     );
   }
 }
