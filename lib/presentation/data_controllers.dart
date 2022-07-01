@@ -45,10 +45,19 @@ class TargetDataController extends DataController<double> {
 
   final Repository repository;
 
-  void saveTarget(double target) async {
+  Future<void> saveTarget(double target) async {
     state = ConnectionState.waiting;
 
     repository.postTarget(target).fold(
+          (left) => setError(left),
+          (right) => setSuccess(right),
+        );
+  }
+
+  Future<void> fetchTarget() async {
+    state = ConnectionState.waiting;
+
+    repository.getTarget().fold(
           (left) => setError(left),
           (right) => setSuccess(right),
         );
@@ -60,7 +69,7 @@ class EntryDataController extends DataController<EntryResponse?> {
 
   final Repository repository;
 
-  void fetchEntries() async {
+  Future<void> fetchEntries() async {
     state = ConnectionState.waiting;
 
     repository.getEntries().fold(
@@ -69,7 +78,7 @@ class EntryDataController extends DataController<EntryResponse?> {
         );
   }
 
-  void saveEntry(EntryPayload entry) async {
+  Future<void> saveEntry(EntryPayload entry) async {
     state = ConnectionState.waiting;
 
     repository.postEntry(entry).fold(
@@ -78,7 +87,7 @@ class EntryDataController extends DataController<EntryResponse?> {
         );
   }
 
-  void deleteEntry(String entryId) async {
+  Future<void> deleteEntry(String entryId) async {
     state = ConnectionState.waiting;
 
     repository.deleteEntry(entryId).fold(

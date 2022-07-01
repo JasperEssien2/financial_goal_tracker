@@ -35,4 +35,10 @@ class RepositoryImpl extends Repository {
     // TODO: implement postTarget
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<String, double>> getTarget() {
+    // TODO: implement getTarget
+    throw UnimplementedError();
+  }
 }

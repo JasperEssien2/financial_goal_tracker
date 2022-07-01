@@ -30,6 +30,14 @@ class EntryResponse extends Equatable {
             .toList(),
         target = json['target'];
 
+  EntryResponse.dummy()
+      : totalCredit = 200,
+        totalDebit = 100,
+        completePercentage = 0.9,
+        target = 1000,
+        entries = [],
+        chartData = [];
+
   EntryResponse copyWith(
       {double? totalCredit,
       double? totalDebit,
@@ -149,7 +157,6 @@ class BarChartValue extends Equatable {
   BarChartValue.fromJson(Map<String, dynamic> json)
       : credit = json['credit'],
         debit = json['debit'];
-
 
   BarChartValue copyWith({
     double? credit,
