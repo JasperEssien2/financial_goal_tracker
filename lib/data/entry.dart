@@ -38,23 +38,6 @@ class EntryResponse extends Equatable {
         entries = [],
         chartData = [];
 
-  EntryResponse copyWith(
-      {double? totalCredit,
-      double? totalDebit,
-      double? completePercentage,
-      List<Entry>? entries,
-      double? target,
-      List<DateBarChartData>? chartData}) {
-    return EntryResponse(
-      totalCredit: totalCredit ?? this.totalCredit,
-      totalDebit: totalDebit ?? this.totalDebit,
-      completePercentage: completePercentage ?? this.completePercentage,
-      entries: entries ?? this.entries,
-      target: target ?? this.target,
-      chartData: chartData ?? this.chartData,
-    );
-  }
-
   @override
   List<Object> get props {
     return [
@@ -90,22 +73,6 @@ class Entry extends Equatable {
         date = json['date'],
         type = json['type'];
 
-  Entry copyWith({
-    String? id,
-    String? source,
-    double? amount,
-    String? date,
-    String? type,
-  }) {
-    return Entry(
-      id: id ?? this.id,
-      source: source ?? this.source,
-      amount: amount ?? this.amount,
-      date: date ?? this.date,
-      type: type ?? this.type,
-    );
-  }
-
   @override
   List<Object?> get props {
     return [
@@ -131,16 +98,6 @@ class DateBarChartData extends Equatable {
       : date = key,
         barChartValue = BarChartValue.fromJson(dataJson);
 
-  DateBarChartData copyWith({
-    String? date,
-    BarChartValue? barChartValue,
-  }) {
-    return DateBarChartData(
-      date: date ?? this.date,
-      barChartValue: barChartValue ?? this.barChartValue,
-    );
-  }
-
   @override
   List<Object> get props => [date, barChartValue];
 }
@@ -157,16 +114,6 @@ class BarChartValue extends Equatable {
   BarChartValue.fromJson(Map<String, dynamic> json)
       : credit = json['credit'],
         debit = json['debit'];
-
-  BarChartValue copyWith({
-    double? credit,
-    double? debit,
-  }) {
-    return BarChartValue(
-      credit: credit ?? this.credit,
-      debit: debit ?? this.debit,
-    );
-  }
 
   @override
   List<Object?> get props => [debit, credit];

@@ -23,20 +23,6 @@ class EntryPayload extends Equatable {
     };
   }
 
-  EntryPayload copyWith({
-    int? date,
-    String? source,
-    double? amount,
-    EntryType? type,
-  }) {
-    return EntryPayload(
-      date: date ?? this.date,
-      source: source ?? this.source,
-      amount: amount ?? this.amount,
-      type: type ?? this.type,
-    );
-  }
-
   @override
   List<Object> get props => [date, source, amount, type];
 }
