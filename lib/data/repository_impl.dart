@@ -3,7 +3,7 @@ import 'package:either_dart/either.dart';
 import 'package:financial_goal_tracker/domain/repository.dart';
 
 import 'dart_export.dart';
-import 'dio_adapter.dart';
+import 'dio_helper.dart';
 
 class RepositoryImpl extends Repository {
   RepositoryImpl(this.dio);

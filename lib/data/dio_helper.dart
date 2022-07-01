@@ -7,9 +7,12 @@ class DioHelper {
   final Dio dio;
 
   Future<Either<String, R>> doGet<R>(
-      String url, R Function(dynamic data) parseData) async {
+    String url,
+    R Function(dynamic data) parseData, {
+    Map<String, dynamic>? query,
+  }) async {
     try {
-      final res = await dio.get(url);
+      final res = await dio.get(url, queryParameters: query);
 
       if (res.data['success']) {
         return Right(parseData(res.data));
@@ -24,10 +27,15 @@ class DioHelper {
   Future<Either<String, R>> doPost<R>(
     String url,
     R Function(dynamic data) parseData, {
-    Map<String, dynamic>? queryParams,
+    required Map<String, dynamic> body,
+    Map<String, dynamic>? query,
   }) async {
     try {
-      final res = await dio.post(url, data: queryParams);
+      final res = await dio.post(
+        url,
+        data: body,
+        queryParameters: query,
+      );
 
       if (res.data['success']) {
         return Right(parseData(res.data));
