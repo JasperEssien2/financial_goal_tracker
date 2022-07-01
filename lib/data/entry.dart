@@ -7,12 +7,14 @@ class EntryResponse extends Equatable {
     required this.completePercentage,
     required this.entries,
     required this.target,
+    this.chartData = const [],
   });
 
   final double totalCredit;
   final double totalDebit;
   final double completePercentage;
   final List<Entry> entries;
+  final List<DateBarChartData> chartData;
   final double target;
 
   //TODO: Implement JSON parsing for EntryResponse model
@@ -23,6 +25,7 @@ class EntryResponse extends Equatable {
     double? completePercentage,
     List<Entry>? entries,
     double? target,
+    List<DateBarChartData>? chartData
   }) {
     return EntryResponse(
       totalCredit: totalCredit ?? this.totalCredit,
@@ -30,6 +33,7 @@ class EntryResponse extends Equatable {
       completePercentage: completePercentage ?? this.completePercentage,
       entries: entries ?? this.entries,
       target: target ?? this.target,
+      chartData: chartData ?? this.chartData,
     );
   }
 
@@ -41,6 +45,7 @@ class EntryResponse extends Equatable {
       completePercentage,
       entries,
       target,
+      chartData,
     ];
   }
 }
@@ -58,16 +63,22 @@ class Entry extends Equatable {
   final String source;
   final double amount;
   final String date;
-  final EntryType type;
+  final String type;
 
   //TODO: Implement JSON parsing for Entry model
+  Entry.fromJson(Map<String, dynamic> json)
+      : id = json['ID'],
+        source = json["source"],
+        amount = json['amount'],
+        date = json['date'],
+        type = json['type'];
 
   Entry copyWith({
     String? id,
     String? source,
     double? amount,
     String? date,
-    EntryType? type,
+    String? type,
   }) {
     return Entry(
       id: id ?? this.id,
@@ -100,6 +111,9 @@ class DateBarChartData extends Equatable {
   final BarChartValue barChartValue;
 
   //TODO: Implement JSON parsing for DateBarChartData model
+  DateBarChartData.fromJson(String key, Map<String, dynamic> dataJson)
+      : date = key,
+        barChartValue = BarChartValue.fromJson(dataJson);
 
   DateBarChartData copyWith({
     String? date,
@@ -143,30 +157,9 @@ class BarChartValue extends Equatable {
     );
   }
 
-  class EntryPayload {
-  EntryPayload({
-  required this.source,
-  required this.amount,
-  required this.date,
-  required this.type,
-  });
-
-  final int date;
-  final String source;
-  final double amount;
-  final String type;
-
-  //TODO Implement to JSON parsing for EntryPayload model
-
-  Map<String, dynamic> toJson() {
-  return {
-  'source': source,
-  'amount': amount,
-  'date': date,
-  'type': type,
-  };
-  }
-  }
+  @override
+  List<Object?> get props => [debit, credit];
+}
 
 enum EntryType {
   credit,
