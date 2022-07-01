@@ -58,13 +58,18 @@ class BarChartValue {
   //TODO Implement JSON parsing for BarChartValue model
 }
 
-class EntryPayload extends Entry {
+class EntryPayload {
   EntryPayload({
-    required super.source,
-    required super.amount,
-    required super.date,
-    required super.type,
+    required this.source,
+    required this.amount,
+    required this.date,
+    required this.type,
   });
+
+  final int date;
+  final String source;
+  final double amount;
+  final String type;
 
   //TODO Implement to JSON parsing for EntryPayload model
 }
