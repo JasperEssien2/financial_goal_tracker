@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -16,7 +14,7 @@ class AuthHelper {
 
     try {
       final auth = await googleSignin.signIn();
-     
+
       if (auth == null) {
         return null;
       } else {
