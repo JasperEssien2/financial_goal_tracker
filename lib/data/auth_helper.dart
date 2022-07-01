@@ -16,14 +16,12 @@ class AuthHelper {
 
     try {
       final auth = await googleSignin.signIn();
-      log("Auth ================ $auth");
-
+     
       if (auth == null) {
         return null;
       } else {
         final headers = await auth.authHeaders;
 
-        log("HEADERS ================ $headers");
         return headers;
       }
     } catch (e) {
