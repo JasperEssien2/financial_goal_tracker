@@ -7,12 +7,14 @@ class EntryResponse extends Equatable {
     required this.completePercentage,
     required this.entries,
     required this.target,
+    this.chartData = const [],
   });
 
   final double totalCredit;
   final double totalDebit;
   final double completePercentage;
   final List<Entry> entries;
+  final List<DateBarChartData> chartData;
   final double target;
 
   //TODO: Implement JSON parsing for EntryResponse model
@@ -23,6 +25,7 @@ class EntryResponse extends Equatable {
     double? completePercentage,
     List<Entry>? entries,
     double? target,
+    List<DateBarChartData>? chartData
   }) {
     return EntryResponse(
       totalCredit: totalCredit ?? this.totalCredit,
@@ -30,6 +33,7 @@ class EntryResponse extends Equatable {
       completePercentage: completePercentage ?? this.completePercentage,
       entries: entries ?? this.entries,
       target: target ?? this.target,
+      chartData: chartData ?? this.chartData,
     );
   }
 
@@ -41,6 +45,7 @@ class EntryResponse extends Equatable {
       completePercentage,
       entries,
       target,
+      chartData,
     ];
   }
 }
@@ -58,7 +63,7 @@ class Entry extends Equatable {
   final String source;
   final double amount;
   final String date;
-  final EntryType type;
+  final String type;
 
   //TODO: Implement JSON parsing for Entry model
 
@@ -67,7 +72,7 @@ class Entry extends Equatable {
     String? source,
     double? amount,
     String? date,
-    EntryType? type,
+    String? type,
   }) {
     return Entry(
       id: id ?? this.id,
