@@ -13,7 +13,7 @@ class EntryPayload extends Equatable {
   final double amount;
   final String type;
 
-  //TODO Implement to JSON parsing for EntryPayload model
+  //TODO: Implement toJson for EntryPayload model
 
   EntryPayload copyWith({
     int? date,

@@ -15,7 +15,7 @@ class EntryResponse extends Equatable {
   final List<Entry> entries;
   final double target;
 
-  //TODO Implement JSON parsing for EntryResponse model
+  //TODO: Implement JSON parsing for EntryResponse model
 
   EntryResponse copyWith({
     double? totalCredit,
@@ -60,7 +60,7 @@ class Entry extends Equatable {
   final String date;
   final EntryType type;
 
-  //TODO Implement JSON parsing for Entry model
+  //TODO: Implement JSON parsing for Entry model
 
   Entry copyWith({
     String? id,
@@ -99,7 +99,7 @@ class DateBarChartData extends Equatable {
   final String date;
   final BarChartValue barChartValue;
 
-  //TODO Implement JSON parsing for DateBarChartData model
+  //TODO: Implement JSON parsing for DateBarChartData model
 
   DateBarChartData copyWith({
     String? date,
@@ -124,7 +124,7 @@ class BarChartValue extends Equatable {
   final double credit;
   final double debit;
 
-  // TODO Implement JSON parsing for BarChartValue model
+  // TODO: Implement JSON parsing for BarChartValue model
 
   BarChartValue copyWith({
     double? credit,
