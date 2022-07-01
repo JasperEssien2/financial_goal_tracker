@@ -1,5 +1,3 @@
-import 'package:financial_goal_tracker/data/dart_export.dart';
-
 class EntryResponse {
   EntryResponse({
     required this.totalCredit,
@@ -14,6 +12,8 @@ class EntryResponse {
   final double completePercentage;
   final List<Entry> entries;
   final double target;
+
+  //TODO Implement JSON parsing for EntryResponse model
 }
 
 class Entry {
@@ -30,6 +30,8 @@ class Entry {
   final double amount;
   final String date;
   final EntryType type;
+
+  //TODO Implement JSON parsing for Entry model
 }
 
 class DateBarChartData {
@@ -40,6 +42,8 @@ class DateBarChartData {
 
   final String date;
   final BarChartValue barChartValue;
+
+  //TODO Implement JSON parsing for DateBarChartData model
 }
 
 class BarChartValue {
@@ -51,9 +55,7 @@ class BarChartValue {
   final double credit;
   final double debit;
 
-  BarChartValue.fromJson(Map<String, dynamic> json)
-      : credit = json['credit'],
-        debit = json['debit'];
+  //TODO Implement JSON parsing for BarChartValue model
 }
 
 class EntryPayload extends Entry {
@@ -64,9 +66,7 @@ class EntryPayload extends Entry {
     required super.type,
   });
 
-  Map<String, dynamic> toJson() {
-    return {};
-  }
+  //TODO Implement to JSON parsing for EntryPayload model
 }
 
 enum EntryType {
