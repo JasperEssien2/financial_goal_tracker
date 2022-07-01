@@ -14,6 +14,8 @@ class EntryResponse {
   final double target;
 
   //TODO Implement JSON parsing for EntryResponse model
+
+
 }
 
 class Entry {
@@ -67,6 +69,15 @@ class EntryPayload extends Entry {
   });
 
   //TODO Implement to JSON parsing for EntryPayload model
+
+  Map<String, dynamic> toJson(){
+    return {
+      'source' : source,
+      'amount' : amount,
+      'date' : date,
+      'type' : type,
+    };
+  }
 }
 
 enum EntryType {
