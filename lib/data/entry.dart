@@ -17,16 +17,26 @@ class EntryResponse extends Equatable {
   final List<DateBarChartData> chartData;
   final double target;
 
-  //TODO: Implement JSON parsing for EntryResponse model
+  EntryResponse.fromJson(Map<String, dynamic> json)
+      : totalCredit = json['total_credit'],
+        totalDebit = json['total_debit'],
+        completePercentage = json['completion_percentage'],
+        entries =
+            (json['entries'] as List).map((e) => Entry.fromJson(e)).toList(),
+        chartData = (json['bar_chart_data'] as Map<String, dynamic>)
+            .keys
+            .map((key) =>
+                DateBarChartData.fromJson(key, json['bar_chart_data']['key']))
+            .toList(),
+        target = json['target'];
 
-  EntryResponse copyWith({
-    double? totalCredit,
-    double? totalDebit,
-    double? completePercentage,
-    List<Entry>? entries,
-    double? target,
-    List<DateBarChartData>? chartData
-  }) {
+  EntryResponse copyWith(
+      {double? totalCredit,
+      double? totalDebit,
+      double? completePercentage,
+      List<Entry>? entries,
+      double? target,
+      List<DateBarChartData>? chartData}) {
     return EntryResponse(
       totalCredit: totalCredit ?? this.totalCredit,
       totalDebit: totalDebit ?? this.totalDebit,
@@ -65,7 +75,6 @@ class Entry extends Equatable {
   final String date;
   final String type;
 
-  //TODO: Implement JSON parsing for Entry model
   Entry.fromJson(Map<String, dynamic> json)
       : id = json['ID'],
         source = json["source"],
@@ -110,7 +119,6 @@ class DateBarChartData extends Equatable {
   final String date;
   final BarChartValue barChartValue;
 
-  //TODO: Implement JSON parsing for DateBarChartData model
   DateBarChartData.fromJson(String key, Map<String, dynamic> dataJson)
       : date = key,
         barChartValue = BarChartValue.fromJson(dataJson);
@@ -138,14 +146,10 @@ class BarChartValue extends Equatable {
   final double credit;
   final double debit;
 
-  // TODO: Implement JSON parsing for BarChartValue model
   BarChartValue.fromJson(Map<String, dynamic> json)
       : credit = json['credit'],
         debit = json['debit'];
 
-  const BarChartValue.dummy()
-      : credit = 20,
-        debit = 50;
 
   BarChartValue copyWith({
     double? credit,
