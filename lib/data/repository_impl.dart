@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
-import 'package:financial_goal_tracker/data/entry.dart';
 import 'package:financial_goal_tracker/domain/repository.dart';
 
+import 'dart_export.dart';
 import 'dio_adapter.dart';
 
 class RepositoryImpl extends Repository {
