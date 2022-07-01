@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class EntryResponse {
   EntryResponse({
     required this.totalCredit,
@@ -14,7 +16,6 @@ class EntryResponse {
   final double target;
 
   //TODO Implement JSON parsing for EntryResponse model
-
 
 }
 
@@ -48,8 +49,8 @@ class DateBarChartData {
   //TODO Implement JSON parsing for DateBarChartData model
 }
 
-class BarChartValue {
-  BarChartValue({
+class BarChartValue extends Equatable {
+  const BarChartValue({
     required this.credit,
     required this.debit,
   });
@@ -58,6 +59,27 @@ class BarChartValue {
   final double debit;
 
   //TODO Implement JSON parsing for BarChartValue model
+
+  BarChartValue.fromJson(Map<String, dynamic> json)
+      : credit = json['credit'],
+        debit = json['debit'];
+
+  const BarChartValue.dummy()
+      : credit = 20,
+        debit = 50;
+
+  BarChartValue copyWith({
+    double? credit,
+    double? debit,
+  }) {
+    return BarChartValue(
+      credit: credit ?? this.credit,
+      debit: debit ?? this.debit,
+    );
+  }
+
+  @override
+  List<Object?> get props => [credit, debit];
 }
 
 class EntryPayload {
@@ -75,12 +97,12 @@ class EntryPayload {
 
   //TODO Implement to JSON parsing for EntryPayload model
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      'source' : source,
-      'amount' : amount,
-      'date' : date,
-      'type' : type,
+      'source': source,
+      'amount': amount,
+      'date': date,
+      'type': type,
     };
   }
 }
