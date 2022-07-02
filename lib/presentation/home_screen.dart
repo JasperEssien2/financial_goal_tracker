@@ -22,23 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     context.targetDataController.addListener(() {
       if (_noTargetSet && !targetBottomSheetUp) {
-        final width = MediaQuery.of(context).size.width;
-        targetBottomSheetUp = true;
-
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          constraints: BoxConstraints(
-            maxWidth: width > 600 ? width * .6 : width,
-          ),
-          builder: (c) => DataControllerProvider<TargetDataController>(
-            dataController: context.targetDataController,
-            child: DataControllerProvider<EntryDataController>(
-              dataController: context.entryDataController,
-              child: const AddTargetBottomSheet(),
-            ),
-          ),
-        );
+        _showAddTargetBottomSheet();
       } else if (_hasTarget) {
         context.entryDataController.fetchEntries();
       }
@@ -46,6 +30,26 @@ class _HomeScreenState extends State<HomeScreen> {
     context.targetDataController.fetchTarget();
 
     super.initState();
+  }
+
+  void _showAddTargetBottomSheet() {
+    final width = MediaQuery.of(context).size.width;
+    targetBottomSheetUp = true;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxWidth: width > 600 ? width * .6 : width,
+      ),
+      builder: (c) => DataControllerProvider<TargetDataController>(
+        dataController: context.targetDataController,
+        child: DataControllerProvider<EntryDataController>(
+          dataController: context.entryDataController,
+          child: const AddTargetBottomSheet(),
+        ),
+      ),
+    );
   }
 
   bool get _noTargetSet =>

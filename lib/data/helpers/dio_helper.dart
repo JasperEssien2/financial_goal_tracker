@@ -46,6 +46,7 @@ class DioHelper {
         return Left(res.data['message']);
       }
     } on DioError catch (e) {
+      /// Handle redirect error
       if (e.response?.statusCode == 302) {
         var url = e.response?.headers['location']!.first;
         return await doGet<R>(url!, parseData);
