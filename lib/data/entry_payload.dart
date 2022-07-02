@@ -13,20 +13,13 @@ class EntryPayload extends Equatable {
   final double amount;
   final String type;
 
-  //TODO: Implement toJson for EntryPayload model
-
-  EntryPayload copyWith({
-    int? date,
-    String? source,
-    double? amount,
-    String? type,
-  }) {
-    return EntryPayload(
-      date: date ?? this.date,
-      source: source ?? this.source,
-      amount: amount ?? this.amount,
-      type: type ?? this.type,
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'date': date,
+      'source': source,
+      'amount': amount,
+      'type': type,
+    };
   }
 
   @override

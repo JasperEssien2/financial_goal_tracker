@@ -1,3 +1,5 @@
+import 'package:financial_goal_tracker/data/entry_payload.dart';
+import 'package:financial_goal_tracker/presentation/datacontroller_provider.dart';
 import 'package:financial_goal_tracker/presentation/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,12 +16,14 @@ class _EntryBottomSheetState extends State<EntryBottomSheet> {
   final _amountTextController = TextEditingController();
   final _typeTextController = TextEditingController();
   final _dateTextController = TextEditingController();
+  var _selectedData = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0)
+            .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,7 +94,9 @@ class _EntryBottomSheetState extends State<EntryBottomSheet> {
                         ),
                         lastDate: DateTime.now(),
                       );
+
                       if (date != null) {
+                        _selectedData = date;
                         _dateTextController.text =
                             DateFormat.yMMMMd().format(date);
                       } else {
@@ -109,13 +115,27 @@ class _EntryBottomSheetState extends State<EntryBottomSheet> {
                   _dateTextController,
                   _sourceTextController,
                   _typeTextController,
+                  context.entryDataController,
                 ],
               ),
               enable: _enableButton,
+              loading: () => context.entryDataController.isLoading,
+              onPress: () => _saveTarget(),
             ),
             const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _saveTarget() {
+    return context.entryDataController.saveEntry(
+      EntryPayload(
+        source: _sourceTextController.text,
+        amount: double.parse(_amountTextController.text),
+        date: _selectedData.millisecondsSinceEpoch,
+        type: _typeTextController.text,
       ),
     );
   }
@@ -140,11 +160,24 @@ class AddTargetBottomSheet extends StatefulWidget {
 
 class _AddTargetBottomSheetState extends State<AddTargetBottomSheet> {
   final _targetTextController = TextEditingController();
+  late final _targetDataController = context.targetDataController;
+
+  @override
+  void initState() {
+    _targetDataController.addListener(() {
+      if (_targetDataController.data != null) {
+        context.entryDataController.fetchEntries();
+        Navigator.pop(context);
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0)
+        ..copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -163,9 +196,16 @@ class _AddTargetBottomSheetState extends State<AddTargetBottomSheet> {
           const SizedBox(height: 24),
           AppButton(
             listenable: Listenable.merge(
-              [_targetTextController],
+              [
+                _targetTextController,
+                _targetDataController,
+              ],
             ),
             enable: _enableButton,
+            loading: () => _targetDataController.isLoading,
+            onPress: () => _targetDataController.saveTarget(
+              double.parse(_targetTextController.text),
+            ),
           ),
           const SizedBox(height: 24),
         ],
@@ -185,10 +225,14 @@ class AppButton extends StatelessWidget {
     Key? key,
     required this.listenable,
     required this.enable,
+    required this.onPress,
+    required this.loading,
   }) : super(key: key);
 
   final Listenable listenable;
   final bool Function() enable;
+  final VoidCallback onPress;
+  final bool Function() loading;
 
   @override
   Widget build(BuildContext context) {
@@ -200,18 +244,26 @@ class AppButton extends StatelessWidget {
         animation: listenable,
         builder: (context, _) {
           return RawMaterialButton(
-            onPressed: () => null,
+            onPressed: onPress,
             fillColor: enable() ? AppColor.primaryColor : Colors.grey[400],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Text(
-              "Save",
-              style: theme.textTheme.button!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            child: loading()
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 8,
+                    ),
+                  )
+                : Text(
+                    "Save",
+                    style: theme.textTheme.button!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
           );
         },
       ),

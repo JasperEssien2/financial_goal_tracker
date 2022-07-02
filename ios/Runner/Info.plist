@@ -10,8 +10,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<!-- TODO Replace this value: -->
-				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-				<string>com.googleusercontent.apps.</string>
+				<string></string>
 			</array>
 		</dict>
 	</array>

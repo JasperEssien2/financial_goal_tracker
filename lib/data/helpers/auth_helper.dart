@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthHelper {
@@ -7,7 +7,7 @@ class AuthHelper {
 
   static Future<Map<String, String>?> authenticate() async {
     final googleSignin = GoogleSignIn(
-      clientId: null,
+      clientId: kIsWeb ? webClientId : null,
       // //TODO: Insert scopes
       scopes: [],
     );
