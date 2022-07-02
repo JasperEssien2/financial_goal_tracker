@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
+import 'package:flutter/foundation.dart';
 
 class DioHelper {
   DioHelper(this.dio);
@@ -19,7 +20,8 @@ class DioHelper {
       } else {
         return Left(res.data['message']);
       }
-    } on DioError {
+    } on DioError catch (e) {
+      debugPrint("ERROR ============= $e");
       return const Left("An error occurred");
     }
   }
@@ -27,22 +29,28 @@ class DioHelper {
   Future<Either<String, R>> doPost<R>(
     String url,
     R Function(dynamic data) parseData, {
-    required Map<String, dynamic> body,
+    Map<String, dynamic>? body,
     Map<String, dynamic>? query,
   }) async {
     try {
-      final res = await dio.post(
-        url,
-        data: body,
-        queryParameters: query,
-      );
+      final res = await dio.post(url,
+          data: body,
+          queryParameters: query,
+          options: Options(
+            followRedirects: false,
+          ));
 
       if (res.data['success']) {
         return Right(parseData(res.data));
       } else {
         return Left(res.data['message']);
       }
-    } on DioError {
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 302) {
+        var url = e.response?.headers['location']!.first;
+        return await doGet<R>(url!, parseData);
+      }
+
       return const Left("An error occurred");
     }
   }

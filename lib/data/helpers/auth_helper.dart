@@ -1,19 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthHelper {
   //TODO: Insert Web client ID
-  static const webClientId =
-      "1026825019140-ejape5jk5q8foclfd64ckg5igrq0e81p.apps.googleusercontent.com";
+  static const webClientId = "";
 
   static Future<Map<String, String>?> authenticate() async {
     final googleSignin = GoogleSignIn(
-      clientId: null,
+      clientId: kIsWeb ? webClientId : null,
       // //TODO: Insert scopes
-      scopes: [
-        "https://www.googleapis.com/auth/drive",
-        "https://www.googleapis.com/auth/spreadsheets",
-      ],
+      scopes: [],
     );
 
     try {

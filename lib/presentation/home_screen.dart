@@ -1,9 +1,11 @@
+import 'package:financial_goal_tracker/presentation/datacontroller_provider.dart';
 import 'package:financial_goal_tracker/presentation/theme/colors.dart';
 import 'package:financial_goal_tracker/presentation/widgets/entry_tile.dart';
 import 'package:financial_goal_tracker/presentation/widgets/widget_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'data_controllers.dart';
 import 'widgets/entry_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,46 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool targetBottomSheetUp = false;
+
+  @override
+  void initState() {
+    context.targetDataController.addListener(() {
+      if (_noTargetSet && !targetBottomSheetUp) {
+        final width = MediaQuery.of(context).size.width;
+        targetBottomSheetUp = true;
+
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          constraints: BoxConstraints(
+            maxWidth: width > 600 ? width * .6 : width,
+          ),
+          builder: (c) => DataControllerProvider<TargetDataController>(
+            dataController: context.targetDataController,
+            child: DataControllerProvider<EntryDataController>(
+              dataController: context.entryDataController,
+              child: const AddTargetBottomSheet(),
+            ),
+          ),
+        );
+      } else if (_hasTarget) {
+        context.entryDataController.fetchEntries();
+      }
+    });
+    context.targetDataController.fetchTarget();
+
+    super.initState();
+  }
+
+  bool get _noTargetSet =>
+      context.targetDataController.error == 'No target found';
+
+  bool get _hasTarget {
+    return !context.targetDataController.hasError &&
+        context.targetDataController.data != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -38,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            resizeToAvoidBottomInset: true,
+            resizeToAvoidBottomInset: false,
             body: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
@@ -63,16 +105,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     [
                       Row(
                         children: const [
-                          Expanded(child: TargetAmountCard()),
-                          Expanded(child: TargetPieChart()),
+                          Expanded(
+                            child: TargetAmountCard(),
+                          ),
+                          Expanded(
+                            child: TargetPieChart(),
+                          ),
                         ],
                       ),
                       const MonthlyBarChart(),
-                      Column(
-                        children: List.generate(
-                          5,
-                          (index) => EntryListTile(),
-                        ),
+                      AnimatedBuilder(
+                        animation: context.entryDataController,
+                        builder: (context, _) {
+                          return Column(
+                            children: context.entryDataController.data?.entries
+                                    .map((e) => EntryListTile(entry: e))
+                                    .toList() ??
+                                [],
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -101,10 +152,14 @@ class FAButton extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
+          isScrollControlled: true,
           constraints: BoxConstraints(
-            maxWidth: width > 600 ? width * .6  : width,
+            maxWidth: width > 600 ? width * .6 : width,
           ),
-          builder: (c) => const EntryBottomSheet(),
+          builder: (c) => DataControllerProvider<EntryDataController>(
+            dataController: context.entryDataController,
+            child: const EntryBottomSheet(),
+          ),
         );
       },
       elevation: 12,

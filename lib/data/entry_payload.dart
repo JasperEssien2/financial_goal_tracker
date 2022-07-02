@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:financial_goal_tracker/data/dart_export.dart';
 
 class EntryPayload extends Equatable {
   const EntryPayload({
@@ -12,14 +11,14 @@ class EntryPayload extends Equatable {
   final int date;
   final String source;
   final double amount;
-  final EntryType type;
+  final String type;
 
   Map<String, dynamic> toJson() {
     return {
       'date': date,
       'source': source,
       'amount': amount,
-      'type': type.toEnumString,
+      'type': type,
     };
   }
 

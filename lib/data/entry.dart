@@ -18,17 +18,17 @@ class EntryResponse extends Equatable {
   final double target;
 
   EntryResponse.fromJson(Map<String, dynamic> json)
-      : totalCredit = json['total_credit'],
-        totalDebit = json['total_debit'],
-        completePercentage = json['completion_percentage'],
+      : totalCredit = (json['total_credit'] as int).toDouble(),
+        totalDebit = json['total_debit'].toDouble(),
+        completePercentage = json['completion_percentage'].toDouble(),
         entries =
             (json['entries'] as List).map((e) => Entry.fromJson(e)).toList(),
         chartData = (json['bar_chart_data'] as Map<String, dynamic>)
             .keys
             .map((key) =>
-                DateBarChartData.fromJson(key, json['bar_chart_data']['key']))
+                DateBarChartData.fromJson(key, json['bar_chart_data'][key]))
             .toList(),
-        target = json['target'];
+        target = json['target'].toDouble();
 
   EntryResponse.dummy()
       : totalCredit = 200,
@@ -69,7 +69,7 @@ class Entry extends Equatable {
   Entry.fromJson(Map<String, dynamic> json)
       : id = json['ID'],
         source = json["source"],
-        amount = json['amount'],
+        amount = json['amount'].toDouble(),
         date = json['date'],
         type = json['type'];
 
@@ -112,8 +112,8 @@ class BarChartValue extends Equatable {
   final double debit;
 
   BarChartValue.fromJson(Map<String, dynamic> json)
-      : credit = json['credit'],
-        debit = json['debit'];
+      : credit = json['credit'].toDouble(),
+        debit = json['debit'].toDouble();
 
   @override
   List<Object?> get props => [debit, credit];

@@ -1,12 +1,13 @@
+import 'package:financial_goal_tracker/data/dart_export.dart';
+import 'package:financial_goal_tracker/presentation/datacontroller_provider.dart';
 import 'package:flutter/material.dart';
 
 class EntryListTile extends StatelessWidget {
-  const EntryListTile({Key? key}) : super(key: key);
+  const EntryListTile({super.key, required this.entry});
 
+  final Entry entry;
   @override
   Widget build(BuildContext context) {
-    const color = Colors.green;
-
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       shape: RoundedRectangleBorder(
@@ -14,23 +15,22 @@ class EntryListTile extends StatelessWidget {
       ),
       child: ListTile(
         horizontalTitleGap: 8,
-
         leading: CircleAvatar(
           radius: 15,
           backgroundColor: color.withOpacity(.3),
-          child: const Center(
+          child: Center(
             child: Icon(
-              Icons.arrow_drop_up,
+              isCredit ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 25,
               color: color,
             ),
           ),
         ),
-        title: const Padding(
-          padding: EdgeInsets.only(bottom: 4),
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 4),
           child: Text(
-            "Car Sales",
-            style:  TextStyle(
+            entry.source,
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.black,
               fontWeight: FontWeight.w700,
@@ -41,25 +41,32 @@ class EntryListTile extends StatelessWidget {
           padding: const EdgeInsets.only(top: 4),
           child: RichText(
             text: TextSpan(
-              text: "\$400,000",
+              text: "\$${entry.amount}",
               style: _subtitleStyle,
               children: [
                 TextSpan(
-                  text: " 12 May 2022",
+                  text: " ${entry.date}",
                   style: _subtitleStyle.copyWith(fontSize: 10),
                 )
               ],
             ),
           ),
         ),
-        trailing: const Icon(
-          Icons.remove_circle,
-          size: 20,
-          color: Colors.grey,
+        trailing: GestureDetector(
+          onTap: () => context.entryDataController.deleteEntry(entry.id!),
+          child: const Icon(
+            Icons.remove_circle,
+            size: 20,
+            color: Colors.grey,
+          ),
         ),
       ),
     );
   }
+
+  Color get color => isCredit ? Colors.green : Colors.red;
+
+  bool get isCredit => entry.type.toLowerCase() == 'credit';
 
   TextStyle get _subtitleStyle {
     return TextStyle(

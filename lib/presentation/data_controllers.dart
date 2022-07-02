@@ -27,11 +27,14 @@ abstract class DataController<T> extends ChangeNotifier {
 
   void setError(String left) {
     _error = left;
+     debugPrint("error DATA =============== $left");
     state = ConnectionState.done;
   }
 
   void setSuccess(T right) {
     _data = right;
+
+    debugPrint("SUCCESS DATA =============== $right");
     state = ConnectionState.done;
   }
 
@@ -40,8 +43,8 @@ abstract class DataController<T> extends ChangeNotifier {
   bool get hasError => _state == ConnectionState.done && error != null;
 }
 
-class TargetDataController extends DataController<double> {
-  TargetDataController(this.repository) : super(0);
+class TargetDataController extends DataController<double?> {
+  TargetDataController(this.repository) : super(null);
 
   final Repository repository;
 

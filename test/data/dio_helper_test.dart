@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:financial_goal_tracker/data/dio_helper.dart';
+import 'package:financial_goal_tracker/data/helpers/dio_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

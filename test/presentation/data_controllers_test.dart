@@ -281,6 +281,13 @@ void main() {
       );
     },
   );
+
+  tearDownAll(
+    () {
+      targetController.dispose();
+      entryController.dispose();
+    },
+  );
 }
 
 EntryPayload _dummyEntryPayload() {
@@ -288,7 +295,7 @@ EntryPayload _dummyEntryPayload() {
     source: "source",
     amount: 300,
     date: 5456566556,
-    type: EntryType.credit,
+    type: "Credit",
   );
 }
 
