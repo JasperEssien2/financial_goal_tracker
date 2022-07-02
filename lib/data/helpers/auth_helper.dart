@@ -8,8 +8,10 @@ class AuthHelper {
   static Future<Map<String, String>?> authenticate() async {
     final googleSignin = GoogleSignIn(
       clientId: kIsWeb ? webClientId : null,
-      // //TODO: Insert scopes
-      scopes: [],
+      scopes: [
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/spreadsheets"
+      ],
     );
 
     try {

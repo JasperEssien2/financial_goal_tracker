@@ -12,41 +12,61 @@ class RepositoryImpl extends Repository {
 
   late final _dioHelper = DioHelper(dio);
 
-  //TODO: Add google script API
-  final url = "";
+  final url =
+      "https://script.google.com/macros/s/AKfycby26BbBsbXGJwI4L_5hTw3IfbZoOIgAltWe0_L3ApHKXQNfQXhlnTtgCHMuQnFxTtZI/exec";
 
   @override
   Future<Either<String, EntryResponse>> deleteEntry(String entryId) {
-    // TODO: implement deleteEntry
-
-    throw UnimplementedError();
+    return _dioHelper
+        .doPost(url, (data) => EntryResponse.fromJson(data['data']), query: {
+      'id': entryId,
+      'action': 'deleteEntry',
+    });
   }
 
   @override
   Future<Either<String, EntryResponse>> getEntries() {
-    // TODO: implement getEntries
-
-    throw UnimplementedError();
+    return _dioHelper.doGet(
+      url,
+      (data) => EntryResponse.fromJson(data['data']),
+      query: {
+        'action': 'getEntries',
+      },
+    );
   }
 
   @override
   Future<Either<String, EntryResponse>> postEntry(EntryPayload entry) {
-    // TODO: implement postEntry
-
-    throw UnimplementedError();
+    return _dioHelper.doPost(
+      url,
+      (data) => EntryResponse.fromJson(data['data']),
+      query: {
+        'action': 'postEntry',
+      },
+      body: entry.toJson(),
+    );
   }
 
   @override
   Future<Either<String, double>> postTarget(double target) {
-    // TODO: implement postTarget
-
-    throw UnimplementedError();
+    return _dioHelper.doPost(
+      url,
+      (data) => (data['data'] as int).toDouble(),
+      query: {
+        'action': 'postTarget',
+      },
+      body: {'target': target},
+    );
   }
 
   @override
   Future<Either<String, double>> getTarget() {
-    // TODO: implement getTarget
-
-    throw UnimplementedError();
+    return _dioHelper.doGet(
+      url,
+      (data) => (data['data'] as int).toDouble(),
+      query: {
+        'action': 'getTarget',
+      },
+    );
   }
 }
