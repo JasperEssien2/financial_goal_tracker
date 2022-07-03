@@ -59,7 +59,7 @@ class TargetAmountCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      "$completionPercentage",
+                      completionPercentage.toStringAsFixed(2),
                       style: TextStyle(color: color),
                     ),
                   ],
@@ -106,7 +106,8 @@ class TargetPieChart extends StatelessWidget {
                           radius: 50,
                           color: colorScheme.primary,
                           titleStyle: labelTextStyle,
-                          title: "${response.completePercentage}%",
+                          title:
+                              "${response.completePercentage.toStringAsFixed(2)}%",
                         ),
                         PieChartSectionData(
                           value: _remainderPercentage(response),
