@@ -16,7 +16,7 @@ class TargetAmountCard extends StatelessWidget {
         final double target = response.target;
         final double completionPercentage = response.completePercentage;
 
-        final bool isBelow = completionPercentage <= 0.5;
+        final bool isBelow = completionPercentage <= 50;
         final Color color = (isBelow ? Colors.red : Colors.greenAccent);
         return FittedBox(
           fit: BoxFit.scaleDown,
