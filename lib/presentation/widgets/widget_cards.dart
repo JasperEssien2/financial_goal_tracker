@@ -16,7 +16,7 @@ class TargetAmountCard extends StatelessWidget {
         final double target = response.target;
         final double completionPercentage = response.completePercentage;
 
-        final bool isBelow = completionPercentage <= 0.5;
+        final bool isBelow = completionPercentage <= 50;
         final Color color = (isBelow ? Colors.red : Colors.greenAccent);
         return FittedBox(
           fit: BoxFit.scaleDown,
@@ -59,7 +59,7 @@ class TargetAmountCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      "$completionPercentage",
+                      completionPercentage.toStringAsFixed(2),
                       style: TextStyle(color: color),
                     ),
                   ],
@@ -106,7 +106,8 @@ class TargetPieChart extends StatelessWidget {
                           radius: 50,
                           color: colorScheme.primary,
                           titleStyle: labelTextStyle,
-                          title: "${response.completePercentage}%",
+                          title:
+                              "${response.completePercentage.toStringAsFixed(2)}%",
                         ),
                         PieChartSectionData(
                           value: _remainderPercentage(response),
