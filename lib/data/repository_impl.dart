@@ -38,15 +38,24 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<String, double>> postTarget(double target) {
-    // TODO: implement postTarget
-
-    throw UnimplementedError();
+    return _dioHelper.doPost(
+      url,
+      (data) => (data['data'] as int).toDouble(),
+      query: {
+        'action': 'postTarget',
+      },
+      body: {'target': target},
+    );
   }
 
   @override
   Future<Either<String, double>> getTarget() {
-    // TODO: implement getTarget
-
-    throw UnimplementedError();
+    return _dioHelper.doGet(
+      url,
+      (data) => (data['data'] as int).toDouble(),
+      query: {
+        'action': 'getTarget',
+      },
+    );
   }
 }
