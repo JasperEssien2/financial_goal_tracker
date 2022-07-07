@@ -9,7 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<!-- TODO Replace this value: -->
+				<!-- TODO Replace this value with the IOS URL Scheme: -->
 				<string></string>
 			</array>
 		</dict>

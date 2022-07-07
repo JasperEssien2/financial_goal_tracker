@@ -1,16 +1,26 @@
-# financial_goal_tracker
+# Financial Goal Tracker
 
-A new Flutter project.
+A demo application that that demonstrates how use  Google Sheet on flutter application via Google App Script API. The idea is to track how well a person is doing financially against a target amount.
 
-## Getting Started
+Here's a demo of the completed application
+![Demo of the Financial Goal Tracker App](display/financial-tracker-demo.gif)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+Additional instructions is needed to run this project. The instructions can be found in an article that's yet to be published (*this link would be included here once published*).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+The codebase is organized into three layers 
+- **Data:**  Contains model classes, repository implementation, e.t.c. 
+- **Domain:** Houses the repository contract.
+- **Presentation:** Contains the widgets and data controller files.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The core packages used are:
+
+| Packages| Use cases|
+|------ |----- |
+|**[google_sign_in](https://pub.dev/packages/google_sign_in)** | Handles authentication and permissions|
+|**[dio](https://pub.dev/packages/dio)**|Used in making API requests|
+|**[fl_chart](https://pub.dev/packages/fl_chart)**|Used to implement charts in the app|
+|**[either_dart](https://pub.dev/packages/either_dart)**|Provides a type safe error handling in dart and flutter|
+
+
+Click [here](https://gist.github.com/JasperEssien2/9cdcc2173db77c0b4badab2ffbfea3d9#file-completed_code-gs) to get the source code for Google App Script.
